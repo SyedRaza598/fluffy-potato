@@ -5,7 +5,9 @@ class TodoCreate(BaseModel):
     completed: bool = False
 
 class TodoUpdate(BaseModel):
-    id: int
+    model_config = {"extra": "forbid"}
+
+    id: int | None = None
     task: str | None = None
     completed: bool | None = None
 
