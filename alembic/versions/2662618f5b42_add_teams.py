@@ -1,8 +1,8 @@
-"""create todos table
+"""add teams
 
-Revision ID: 3ee2cef5c015
-Revises: ab10ea26129e
-Create Date: 2026-05-30 19:12:13.311081
+Revision ID: 2662618f5b42
+Revises: 968b436216c4
+Create Date: 2026-06-02 17:07:22.661744
 
 """
 from typing import Sequence, Union
@@ -11,8 +11,8 @@ from alembic import op
 import sqlalchemy as sa
 
 
-revision: str = '3ee2cef5c015'
-down_revision: Union[str, None] = 'ab10ea26129e'
+revision: str = '2662618f5b42'
+down_revision: Union[str, None] = '968b436216c4'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
