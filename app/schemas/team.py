@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class TeamCreate(BaseModel):
     name: str
     description: str | None = None
-    created_by: int
+    created_by: int = 0  # set server-side from the authenticated user
 
 
 class TeamRead(BaseModel):

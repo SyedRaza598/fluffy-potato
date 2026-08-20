@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.core.security import verify_password, create_access_token
 from app.services import user as user_service
+from app.schemas.user import UserCreate, UserRead
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -12,6 +13,17 @@ router = APIRouter()
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+@router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
+async def register(data: UserCreate, db: AsyncSession = Depends(get_db)):
+    """Public self-signup. Role is always forced to 'member'."""
+    data.role = "member"
+    if await user_service.get_by_email(db, data.email):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
+    if await user_service.get_by_username(db, data.username):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Username already taken")
+    return await user_service.create(db, data)
 
 
 @router.post("/login", response_model=Token)

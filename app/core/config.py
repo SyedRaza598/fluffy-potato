@@ -14,6 +14,11 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
+    # First admin seed (set these in .env)
+    FIRST_ADMIN_EMAIL: str = "admin@example.com"
+    FIRST_ADMIN_USERNAME: str = "admin"
+    FIRST_ADMIN_PASSWORD: str = "changeme123"
+
     class Config:
         env_file = ".env"
         case_sensitive = True

@@ -3,6 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.schemas.user import UserCreate, UserRead
 from app.services import user as user_service
+from app.core.deps import require_admin
+from app.models.user import User
 
 router = APIRouter()
 
@@ -21,7 +23,11 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-async def create_user(data: UserCreate, db: AsyncSession = Depends(get_db)):
+async def create_user(
+    data: UserCreate,
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(require_admin),
+):
     if await user_service.get_by_email(db, data.email):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
     if await user_service.get_by_username(db, data.username):
