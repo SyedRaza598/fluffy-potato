@@ -1,6 +1,11 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import Boolean, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class Todo(Base):
@@ -12,4 +17,4 @@ class Todo(Base):
     completed: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
-    owner: Mapped["User"] = relationship("User", back_populates="todos")  # noqa: F821
+    owner: Mapped["User"] = relationship("User", back_populates="todos")
